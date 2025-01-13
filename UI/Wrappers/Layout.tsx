@@ -3,17 +3,19 @@ import React from "react";
 import { WrapperType } from "./type";
 import { StatusBar } from "expo-status-bar";
 import { COLORS } from "../../global/constants/color";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Layout = ({ children, style, padding, noScrollView }: WrapperType) => {
+  const insets = useSafeAreaInsets();
   const styles = StyleSheet.create({
     container: {
-      minHeight: "100%",
+      minHeight: "110%",
       padding: padding,
     },
     safeArea: {
-      minHeight: "100%",
+      minHeight: "110%",
       backgroundColor: COLORS.BACKGROUND_COLOR,
-      paddingTop: 16,
+      paddingTop: insets.top,
     },
   });
   if (noScrollView) {

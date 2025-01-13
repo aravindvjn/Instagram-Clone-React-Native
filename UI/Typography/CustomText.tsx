@@ -6,7 +6,7 @@ import { COLORS } from "../../global/constants/color";
 const CustomText = ({
   children,
   textStyle,
-  fontSize = 12,
+  fontSize = 13,
   textAlign,
   ...props
 }: TypographyType) => {

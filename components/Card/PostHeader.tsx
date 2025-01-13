@@ -2,21 +2,22 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Profile from "../Images/Profile";
 import CustomText from "../../UI/Typography/CustomText";
+import VisitUser from "../Helpers/VisitUser";
+import { PostTypes } from "../Home/type";
 
-type PostHeaderType = {
-  username: string;
-  profile_url: string;
-};
-const PostHeader = ({
-  profile_url,
-  username,
-}: PostHeaderType) => {
+const PostHeader = ({ id, profile_url, username, locations }: PostTypes) => {
   return (
     <View style={styles.container}>
-      <Profile profile_url={profile_url} size={32} />
+      <VisitUser id={id}>
+        <Profile profile_url={profile_url} size={32} />
+      </VisitUser>
       <View>
-        <CustomText fontSize={13}>{username}</CustomText>
-        <CustomText fontSize={11}>Tokyo, Japan</CustomText>
+        <VisitUser id={id}>
+          <CustomText textStyle={{ fontWeight: "bold" }} fontSize={13}>
+            {username}
+          </CustomText>
+        </VisitUser>
+        <CustomText fontSize={11}>{locations}</CustomText>
       </View>
     </View>
   );

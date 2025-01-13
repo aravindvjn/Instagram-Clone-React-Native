@@ -16,6 +16,8 @@ const Post = ({
   uri,
   username = "instagram user",
   caption,
+  likes_count,
+  locations
 }: PostTypes) => {
   const { width } = useWindowDimensions();
 
@@ -27,9 +29,9 @@ const Post = ({
   });
   return (
     <View>
-      <PostHeader profile_url={profile_url} username={username} />
+      <PostHeader locations={locations} id={id} profile_url={profile_url} username={username} />
       <Image style={styles.image} source={{ uri: uri }} resizeMode="cover" />
-      <PostFooter id={id} caption={caption} username={username} />
+      <PostFooter likes_count={likes_count} id={id} caption={caption} username={username} />
     </View>
   );
 };

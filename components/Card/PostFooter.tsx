@@ -4,45 +4,40 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
 import CustomText from "../../UI/Typography/CustomText";
 import { PostTypes } from "../Home/type";
+import { formateFollow } from "../../global/functions/helperFunctions";
+import Icons from "../../UI/Icons/Icons";
 
-const PostFooter = ({ username, caption }: PostTypes) => {
+const PostFooter = ({ username, caption, likes_count = 0 }: PostTypes) => {
   const [liked, setLiked] = useState<boolean>();
   const handleLiked = () => {
     setLiked((prev) => !prev);
   };
+
   return (
     <View style={{ paddingHorizontal: 15, marginBottom: 30 }}>
       <View style={styles.container}>
         <Pressable onPress={handleLiked}>
-          <Ionicons
-            name={liked ? "heart-sharp" : "heart-outline"}
-            color={COLORS.TEXT_COLOR}
-            size={30}
-          />
+          <Icons name={liked ? "like-fill" : "like"} size={27} />
         </Pressable>
-        <Ionicons
-          name="chatbubble-outline"
-          color={COLORS.TEXT_COLOR}
-          size={27}
-        />
-        <Ionicons name="send-outline" color={COLORS.TEXT_COLOR} size={27} />
+        <Icons name="comment" size={27} />
+        <Icons name="share" size={27} />
       </View>
       <View>
         <CustomText fontSize={13}>
           Liked by{" "}
           <CustomText fontSize={13} style={styles.bold}>
-            6windh
+            6windh{" "}
           </CustomText>
           and{" "}
           <CustomText fontSize={13} style={styles.bold}>
-            44,686 others
+            {likes_count > 0 ? formateFollow(likes_count - 1) : 0} others
           </CustomText>
         </CustomText>
         <CustomText>
           <CustomText fontSize={13} style={styles.bold}>
             {username}
           </CustomText>
-          <CustomText fontSize={13}>{caption}</CustomText>
+          <CustomText fontSize={13}> {caption}</CustomText>
         </CustomText>
       </View>
     </View>

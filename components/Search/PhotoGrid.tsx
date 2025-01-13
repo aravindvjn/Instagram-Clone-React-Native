@@ -18,31 +18,31 @@ const PhotoGrid = () => {
           index += 1;
           if (index % 4 === 1) {
             return (
-              <View style={styles.grid}>
+              <View key={index} style={styles.grid}>
                 <View>
-                  <ImageParts uri={data[1 * index - 1].uri} />
-                  <ImageParts uri={data[1 * index - 1].uri} />
+                  <ImageParts uri={data[1 * index - 1].uri || ""} />
+                  <ImageParts uri={data[2 * index - 1].uri || ""} />
                 </View>
-                <ImageParts large uri={data[1 * index - 1].uri} />
+                <ImageParts large uri={data[3 * index - 1].uri || ""} />
               </View>
             );
           }
           if (index % 4 === 0) {
             return (
-              <View style={styles.grid}>
-                <ImageParts large uri={data[1 * index - 1].uri} />
+              <View key={index} style={styles.grid}>
+                <ImageParts large uri={data[1 * index - 1].uri || ""} />
                 <View>
-                  <ImageParts uri={data[1 * index - 1].uri} />
-                  <ImageParts uri={data[1 * index - 1].uri} />
+                  <ImageParts uri={data[2 * index - 1].uri || ""} />
+                  <ImageParts uri={data[3 * index - 1].uri || ""} />
                 </View>
               </View>
             );
           }
           return (
-            <View style={styles.grid}>
-              <ImageParts uri={data[1 * index - 1].uri} />
-              <ImageParts uri={data[2 * index - 1].uri} />
-              <ImageParts uri={data[3 * index - 1].uri} />
+            <View key={index} style={styles.grid}>
+              <ImageParts uri={data[1 * index - 1].uri || ""} />
+              <ImageParts uri={data[2 * index - 1].uri || ""} />
+              <ImageParts uri={data[3 * index - 1].uri || ""} />
             </View>
           );
         })}

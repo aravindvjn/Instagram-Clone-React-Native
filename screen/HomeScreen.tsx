@@ -4,16 +4,17 @@ import Layout from "../UI/Wrappers/Layout";
 import Header from "../components/Home/Header";
 import Stories from "../components/Home/Stories";
 import Post from "../components/Card/Post";
-import { PostTypes } from "../components/Home/type";
+import { PostTypes, StoryTypes } from "../components/Home/type";
 import { data } from "../data";
+import Block from "../components/Helpers/Block";
 
 const HomeScreen = () => {
   const [posts, setPosts] = useState<PostTypes[]>(data);
-
+  const [stories, setStories] = useState<StoryTypes[]>(data);
   const header = (
     <>
       <Header />
-      <Stories />
+      <Stories stories={stories} />
     </>
   );
 
@@ -22,6 +23,7 @@ const HomeScreen = () => {
       <>
         {index === 0 && header}
         <Post {...item} />
+        {index === posts?.length - 1 && <Block height={250} />}
       </>
     );
   };

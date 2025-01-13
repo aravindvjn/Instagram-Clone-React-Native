@@ -16,8 +16,10 @@ const CustomButton = ({
     pressable: {
       backgroundColor: backgroundColor || COLORS.BLUE,
       paddingHorizontal: 15,
-      paddingVertical: 13,
       borderRadius: 5,
+      height: 45,
+      alignItems: "center",
+      justifyContent:'center'
     },
     text: {
       color: color || COLORS.TEXT_COLOR,
