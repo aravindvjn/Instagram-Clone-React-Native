@@ -16,6 +16,7 @@ import CreateScreen from "./screen/CreateScreen";
 import Icons from "./UI/Icons/Icons";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "./hooks/useCurrentUser";
+import Profile from "./components/Images/Profile";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -92,12 +93,12 @@ const ProtectedRoutes = () => {
         initialParams={{ id: user?.id }}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icons name={"account"} size={size} />
+            <Profile size={size+3} profile_url={user?.profile_url} />
           ),
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
             navigation.navigate("Profile");
           },
         })}

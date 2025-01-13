@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 import Profile from "../Images/Profile";
 import VisitUser from "../Helpers/VisitUser";
 import CustomText from "../../UI/Typography/CustomText";
@@ -8,21 +8,32 @@ import CustomButton from "../../UI/Buttons/CustomButton";
 import Center from "../../UI/Wrappers/Center";
 
 const CreatorDetails = ({ user, caption }: ReelType) => {
+  const [noLines, setNoLines] = useState<number | undefined>(1);
   return (
     <View style={styles.container}>
-      <Profile size={40} profile_url={user?.profile_url} />
+     <VisitUser id={user?.id}>
+     <Profile size={40} profile_url={user?.profile_url} />
+     </VisitUser>
       <View>
         <Center style={styles.row}>
-          <VisitUser>
+          <VisitUser id={user?.id}>
             <CustomText fontSize={14} textStyle={styles.username}>
               {user?.username || "isudgugsg "}
             </CustomText>
           </VisitUser>
           <CustomButton style={styles.button}>Follow</CustomButton>
         </Center>
-        <CustomText textStyle={{ width: "55%" }} fontSize={14}>
-          {caption}
-        </CustomText>
+        <Pressable
+          onPress={() => setNoLines((prev) => (prev === 1 ? undefined : 1))}
+        >
+          <CustomText
+            numberOfLines={noLines}
+            textStyle={{ width: "55%" }}
+            fontSize={14}
+          >
+            {caption}
+          </CustomText>
+        </Pressable>
       </View>
     </View>
   );
