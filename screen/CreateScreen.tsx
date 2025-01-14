@@ -5,7 +5,7 @@ import CreatePost from "../components/Create/CreatePosts";
 
 const CreateScreen = () => {
   return (
-    <Layout noScrollView>
+    <Layout>
       <CreatePost />
     </Layout>
   );

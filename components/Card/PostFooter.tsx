@@ -1,18 +1,43 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
 import CustomText from "../../UI/Typography/CustomText";
 import { PostTypes } from "../Home/type";
 import { formateFollow } from "../../global/functions/helperFunctions";
 import Icons from "../../UI/Icons/Icons";
+import { toggleLike } from "../../global/functions/postRequests";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Layout from "../../UI/Wrappers/Layout";
 
-const PostFooter = ({ username, caption, likes_count = 0 }: PostTypes) => {
-  const [liked, setLiked] = useState<boolean>();
-  const handleLiked = () => {
-    setLiked((prev) => !prev);
+interface LikePlusPostType extends PostTypes {
+  isLiked?: boolean;
+}
+const PostFooter = ({
+  id,
+  username,
+  caption,
+  likes_count = 0,
+  post_id,
+  isLiked = false,
+}: LikePlusPostType) => {
+  const [liked, setLiked] = useState<boolean>(isLiked);
+  const handleLiked = async () => {
+    if (id && post_id) {
+      setLiked((prev) => !prev);
+      const results = await toggleLike({
+        userId: id!,
+        postId: post_id!,
+      });
+      if (results?.status) {
+        if (results?.liked) {
+          setLiked(true);
+        } else {
+          setLiked(false);
+        }
+      }
+    }
   };
-
   return (
     <View style={{ paddingHorizontal: 15, marginBottom: 30 }}>
       <View style={styles.container}>
@@ -23,15 +48,8 @@ const PostFooter = ({ username, caption, likes_count = 0 }: PostTypes) => {
         <Icons name="share" size={27} />
       </View>
       <View>
-        <CustomText fontSize={13}>
-          Liked by{" "}
-          <CustomText fontSize={13} style={styles.bold}>
-            6windh{" "}
-          </CustomText>
-          and{" "}
-          <CustomText fontSize={13} style={styles.bold}>
-            {likes_count > 0 ? formateFollow(likes_count - 1) : 0} others
-          </CustomText>
+        <CustomText fontSize={13} textStyle={styles.bold}>
+          {likes_count} Likes
         </CustomText>
         <CustomText>
           <CustomText fontSize={13} style={styles.bold}>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import Input from "../../UI/Inputs/Input";
 import CustomText from "../../UI/Typography/CustomText";
@@ -8,18 +8,68 @@ import Center from "../../UI/Wrappers/Center";
 import Instagram from "../Images/Instagram";
 import { UserInputs } from "./type";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { users } from "../../data/users";
+import { signIn, signUp } from "../../global/store/auth";
 
 const Login = () => {
   const [inputs, setInputs] = useState<UserInputs>({
     password: "",
+    email: "",
     username: "",
   });
+  const [login, setLogin] = useState<boolean>(true);
+  const usernameRegex = /^[a-z0-9._]+$/;
+  const changeLogin = () => {
+    setLogin((prev) => !prev);
+  };
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
-  const handleSetData = () => {
-    queryClient.setQueryData(["user"], users[1]);
+  const handleSetData = async () => {
+    if (login) {
+      if (!inputs.email || !inputs.password) {
+        Alert.alert("Please enter your email or password");
+      } else if (inputs?.password?.length < 8) {
+        Alert.alert("Password must be at least 8 characters long");
+      } else {
+        setIsLoading(true);
+        const results = await signIn(inputs.email!, inputs.password);
+        if (results?.status) {
+          queryClient.setQueryData(["user"], results);
+        } else {
+          Alert.alert(results?.message);
+        }
+        setIsLoading(false);
+      }
+    } else {
+      if (!inputs.email || !inputs.password || !inputs.username) {
+        Alert.alert("Please fill everything.");
+      }
+      if (!usernameRegex.test(inputs?.username!)) {
+        Alert.alert(
+          "Username should only contain alphanumeric characters,digits, dots and underscores."
+        );
+        return;
+      } else if (inputs?.password?.length < 6) {
+        Alert.alert("Password must be at least 6 characters long");
+      } else {
+        setIsLoading(true);
+        const results = await signUp(
+          inputs.email!,
+          inputs.password,
+          inputs.username!
+        );
+        if (results?.status) {
+          Alert.alert("Account created successfully. Please sign in.");
+          setLogin(true);
+        } else {
+          Alert.alert(results?.message);
+        }
+        setIsLoading(false);
+      }
+    }
   };
+
   return (
     <View style={styles.container}>
       <View></View>
@@ -27,14 +77,31 @@ const Login = () => {
         <Center>
           <Instagram />
         </Center>
+        {!login && (
+          <Input
+            placeholder="Username"
+            value={inputs?.username}
+            onChangeText={(text: string) => {
+              const trimmedText = text.trim().toLowerCase();
+              if (usernameRegex.test(trimmedText) || trimmedText === "") {
+                setInputs((prev) => ({ ...prev, username: trimmedText }));
+              }
+            }}
+          />
+        )}
         <Input
-          onChange={(text) =>
-            setInputs((prev: any) => ({ ...prev, username: text }))
+          value={inputs?.email}
+          onChangeText={(text) =>
+            setInputs((prev: any) => ({
+              ...prev,
+              email: text.toLocaleLowerCase(),
+            }))
           }
-          placeholder="Username"
+          placeholder="Email"
         />
         <Input
-          onChange={(text) =>
+          value={inputs?.password}
+          onChangeText={(text) =>
             setInputs((prev: any) => ({ ...prev, password: text }))
           }
           placeholder="Password"
@@ -42,7 +109,11 @@ const Login = () => {
         <CustomText textAlign="right" textStyle={styles.text}>
           Forgot Password
         </CustomText>
-        <CustomButton onPress={handleSetData} style={styles.button}>
+        <CustomButton
+          isLoading={isLoading}
+          onPress={handleSetData}
+          style={styles.button}
+        >
           Login
         </CustomButton>
         <Center style={styles.center}>
@@ -53,10 +124,15 @@ const Login = () => {
             OR
           </CustomText>
           <CustomText textStyle={styles.opacity} fontSize={14}>
-            Don’t have an account?{" "}
-            <CustomText fontSize={14} textStyle={styles.text}>
-              Sign up.
-            </CustomText>
+            {login ? "Don’t have an account?" : "Already have an account?"}{" "}
+            <Pressable
+              onPress={changeLogin}
+              style={{ transform: [{ translateY: 4 }] }}
+            >
+              <CustomText fontSize={14} textStyle={styles.text}>
+                {login ? "Sign up." : "Sign in."}
+              </CustomText>
+            </Pressable>
           </CustomText>
         </Center>
       </View>

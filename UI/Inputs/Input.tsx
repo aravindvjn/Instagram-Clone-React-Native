@@ -2,16 +2,30 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
 import { InputType } from "./type";
 import { COLORS } from "../../global/constants/color";
+import CustomText from "../Typography/CustomText";
 
-const Input = ({ placeholder, inputStyle, style, ...props }: InputType) => {
+const Input = ({
+  placeholder,
+  isLabel,
+  inputStyle,
+  style,
+  ...props
+}: InputType) => {
   return (
     <View style={style}>
       <TextInput
-        style={[styles.input, inputStyle]}
+        style={[
+          styles.input,
+          inputStyle,
+          isLabel && { paddingTop: 25, borderRadius: 12 },
+        ]}
         placeholderTextColor={"rgba(255,255,255,0.6)"}
         placeholder={placeholder}
         {...props}
       />
+      {isLabel && (
+        <CustomText textStyle={styles.label}>{placeholder}</CustomText>
+      )}
     </View>
   );
 };
@@ -29,5 +43,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.2)",
     color: COLORS.TEXT_COLOR,
+  },
+  label: {
+    position: "absolute",
+    left: 15,
+    top: 10,
+    opacity: 0.4,
   },
 });

@@ -1,11 +1,13 @@
 export interface PostTypes {
-    id: number;
-    profile_url?: string;
+    post_id?: string;
+    id?: string;
+    profilePic?: string;
     username?: string;
     uri?: string;
     caption?: string;
     likes_count?: number;
-    locations?: string
+    locations?: string;
+    liked_users?: string[]
 }
 export interface StoryTypes {
     profile_url?: string;

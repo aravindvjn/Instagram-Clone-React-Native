@@ -7,4 +7,5 @@ export interface ButtonType extends PressableProps {
     textStyle?: StyleProp<TextStyle>;
     backgroundColor?: string;
     color?: string;
+    isLoading?: boolean;
 }

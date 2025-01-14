@@ -1,4 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React from "react";
 import CustomText from "../Typography/CustomText";
 import { ButtonType } from "./type";
@@ -9,6 +15,7 @@ const CustomButton = ({
   backgroundColor,
   color,
   style,
+  isLoading,
   textStyle,
   ...props
 }: ButtonType) => {
@@ -19,7 +26,7 @@ const CustomButton = ({
       borderRadius: 5,
       height: 45,
       alignItems: "center",
-      justifyContent:'center'
+      justifyContent: "center",
     },
     text: {
       color: color || COLORS.TEXT_COLOR,
@@ -40,9 +47,13 @@ const CustomButton = ({
         pressed && styles.pressed,
       ]}
     >
-      <CustomText fontSize={14} textStyle={[styles.text, textStyle]}>
-        {children}
-      </CustomText>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <CustomText fontSize={14} textStyle={[styles.text, textStyle]}>
+          {children}
+        </CustomText>
+      )}
     </Pressable>
   );
 };

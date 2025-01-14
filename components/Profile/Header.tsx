@@ -16,6 +16,10 @@ import Counts from "./Counts";
 import CustomButton from "../../UI/Buttons/CustomButton";
 import OperationButtons from "./OperationButtons";
 import OtherUsersHeader from "./OtherUsersHeader";
+import EditProfile from "./EditProfile";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigation } from "@react-navigation/native";
 
 export type StoryStatusType =
   | "Viewed"
@@ -26,17 +30,25 @@ const Header = ({
   username,
   id,
   name,
-  profile_url,
+  profilePic,
   bio,
   followers = 0,
   following = 0,
-  noPosts = 0,
   isPrivate,
+  posts = [],
   currentUser,
 }: UserType) => {
   const [storyStatus, setStoryStatus] = useState<StoryStatusType>("Viewed");
+  const queryClient = useQueryClient();
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const navigation: any = useNavigation();
+  const logoutHandler = async () => {
+    await AsyncStorage.removeItem("idToken");
+    queryClient.setQueryData(["user"], () => null);
+  };
   return (
     <View>
+      <EditProfile isVisible={isVisible} setIsVisible={setIsVisible} />
       {currentUser?.id === id ? (
         <AccountDropDown
           id={id}
@@ -59,11 +71,11 @@ const Header = ({
               : { borderColor: "transparent" },
           ]}
         >
-          <Profile profile_url={profile_url} size={86} />
+          <Profile profile_url={profilePic} size={86} />
         </View>
 
         <View style={styles.countContainer}>
-          <Counts count={noPosts} text="Posts" />
+          <Counts count={posts?.length} text="Posts" />
           <Counts count={followers} text="Followers" />
           <Counts count={following} text="Following" />
         </View>
@@ -74,9 +86,19 @@ const Header = ({
         </CustomText>
         <CustomText fontSize={14}>{bio}</CustomText>
         {currentUser?.id === id ? (
-          <CustomButton style={styles.editButton}>Edit Profile</CustomButton>
+          <CustomButton
+            onPress={() => setIsVisible(true)}
+            style={styles.editButton}
+          >
+            Edit Profile
+          </CustomButton>
         ) : (
           <OperationButtons status="Following" />
+        )}
+        {currentUser?.id === id && (
+          <CustomButton onPress={logoutHandler} style={styles.editButton}>
+            Logout
+          </CustomButton>
         )}
       </View>
     </View>
@@ -120,7 +142,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     backgroundColor: "transparent",
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
     height: 30,
     marginTop: 10,

@@ -5,7 +5,13 @@ import CustomButton from "../../UI/Buttons/CustomButton";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const Header = () => {
+const Header = ({
+  onPress,
+  isLoading,
+}: {
+  onPress: () => void;
+  isLoading: boolean;
+}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.row}>
@@ -15,8 +21,14 @@ const Header = () => {
         </Pressable>
         <CustomText fontSize={20}>New Post</CustomText>
       </View>
-      <CustomButton textStyle={{ fontSize: 16 }} style={styles.button}>
-        Next
+      <CustomButton
+        isLoading={isLoading}
+        disabled={isLoading}
+        onPress={onPress}
+        textStyle={{ fontSize: 16 }}
+        style={styles.button}
+      >
+        Post
       </CustomButton>
     </View>
   );

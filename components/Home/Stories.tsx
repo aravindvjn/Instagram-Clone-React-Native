@@ -6,12 +6,14 @@ import CustomText from "../../UI/Typography/CustomText";
 import { StoryTypes } from "./type";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Stories = ({ stories }: { stories: StoryTypes[] }) => {
+  const {data} = useCurrentUser()
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        <SingleStory username="Your Story" />
+        <SingleStory profile_url={data?.profilePic} username="Your Story" />
         {stories?.map((story) => (
           <SingleStory
             key={story.username}
@@ -70,11 +72,11 @@ export const SingleStory = ({
           <Profile profile_url={profile_url} />
         )}
       </Pressable>
-      <CustomText>
+      <CustomText fontSize={12}>
         {addStory
           ? "New"
-          : username?.length > 10
-          ? `${username?.slice(0, 10)}...`
+          : username?.length > 15
+          ? `${username?.slice(0, 15)}...`
           : username}
       </CustomText>
     </Center>

@@ -5,11 +5,12 @@ import CustomText from "../../UI/Typography/CustomText";
 import VisitUser from "../Helpers/VisitUser";
 import { PostTypes } from "../Home/type";
 
-const PostHeader = ({ id, profile_url, username, locations }: PostTypes) => {
+const PostHeader = ({ id, profilePic, username, locations }: PostTypes) => {
+  console.log(id,"==id")
   return (
     <View style={styles.container}>
       <VisitUser id={id}>
-        <Profile profile_url={profile_url} size={32} />
+        <Profile profile_url={profilePic} size={32} />
       </VisitUser>
       <View>
         <VisitUser id={id}>

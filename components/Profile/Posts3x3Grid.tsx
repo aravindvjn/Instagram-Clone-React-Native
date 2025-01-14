@@ -11,17 +11,19 @@ import { data } from "../../data";
 import { UserType } from "./type";
 import { PostTypes } from "../Home/type";
 import { Ionicons } from "@expo/vector-icons";
+import NoPosts from "./NoPosts";
+import { useNavigation } from "@react-navigation/native";
 
-const Posts3x3Grid = ({ id }: UserType) => {
-  const [posts, setPosts] = useState<PostTypes[]>();
+const Posts3x3Grid = (props: UserType) => {
+  const { id, posts = [] } = props;
+  console.log(props);
   const [page, setPage] = useState<"grid" | "tags">("grid");
-  useEffect(() => {
-    const results = data.filter((post) => post.id === id);
-    setPosts(results);
-  }, [id]);
   const changePageHandler = () => {
     setPage(page === "grid" ? "tags" : "grid");
   };
+  if (!posts || posts?.length === 0) {
+    return <NoPosts />;
+  }
   return (
     <View>
       <View style={styles.container}>
@@ -55,9 +57,12 @@ const Posts3x3Grid = ({ id }: UserType) => {
             flexWrap: "wrap",
           }}
         >
-          {posts?.map((item, index) => (
-            <SingleCell uri={item?.uri} key={index} />
-          ))}
+          {posts &&
+            posts
+              ?.reverse()
+              ?.map((item, index) => (
+                <SingleCell id={id} {...item} uri={item?.uri} key={index} />
+              ))}
         </View>
       )}
     </View>
@@ -79,10 +84,11 @@ const styles = StyleSheet.create({
     height: 59,
   },
 });
-const SingleCell = ({ uri }: { uri?: string }) => {
+const SingleCell = (props: PostTypes) => {
+  const { uri, id } = props;
   const { width } = useWindowDimensions();
   const oneByThree = width / 3;
-
+  const navigation: any = useNavigation();
   const styles = StyleSheet.create({
     container: {
       width: oneByThree - 2,
@@ -92,7 +98,10 @@ const SingleCell = ({ uri }: { uri?: string }) => {
     },
   });
   return (
-    <View style={styles.container}>
+    <Pressable
+      onPress={() => navigation.navigate("DetailedPost", { post: props })}
+      style={styles.container}
+    >
       {uri ? (
         <Image style={styles.container} source={{ uri }} />
       ) : (
@@ -101,6 +110,6 @@ const SingleCell = ({ uri }: { uri?: string }) => {
           source={require("../../assets/demo/post.png")}
         />
       )}
-    </View>
+    </Pressable>
   );
 };

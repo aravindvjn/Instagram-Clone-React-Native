@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -17,11 +17,28 @@ import Icons from "./UI/Icons/Icons";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import Profile from "./components/Images/Profile";
+import { data } from "./data";
+import Layout from "./UI/Wrappers/Layout";
+import Center from "./UI/Wrappers/Center";
+import DetailedPostScreen from "./screen/DetailedPostScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+let failed = false;
 const Routes = () => {
-  const { data: user } = useCurrentUser();
+  const { data: user, isLoading, isError } = useCurrentUser();
+  if (isError) {
+    failed = true;
+  }
+  if (isLoading && !failed) {
+    return (
+      <Layout>
+        <Center>
+          <ActivityIndicator size={"large"} />
+        </Center>
+      </Layout>
+    );
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -29,9 +46,12 @@ const Routes = () => {
           headerShown: false,
         }}
       >
-        {!!!user && <Stack.Screen name="Auth" component={AuthScreen} />}
+        {(!!!user || isError) && (
+          <Stack.Screen name="Auth" component={AuthScreen} />
+        )}
+        {!!user && <Stack.Screen name="Main" component={MainRoutes} />}
         {!!user && (
-          <Stack.Screen name="Protected" component={ProtectedRoutes} />
+          <Stack.Screen name="DetailedPost" component={DetailedPostScreen} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
@@ -40,7 +60,20 @@ const Routes = () => {
 
 export default Routes;
 
-const ProtectedRoutes = () => {
+// const ProtectedRoutes = () => {
+//   return (
+//     <Stack.Navigator
+//       screenOptions={{
+//         headerShown: false,
+//       }}
+//     >
+//       <Stack.Screen name="Main" component={MainRoutes} />
+//       <Stack.Screen name="DetailedPost" component={DetailedPostScreen} />
+//     </Stack.Navigator>
+//   );
+// };
+
+const MainRoutes = () => {
   const { data: user } = useCurrentUser();
   return (
     <Tab.Navigator
@@ -93,7 +126,7 @@ const ProtectedRoutes = () => {
         initialParams={{ id: user?.id }}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Profile size={size+3} profile_url={user?.profile_url} />
+            <Profile size={size + 3} profile_url={user?.profilePic} />
           ),
         }}
         listeners={({ navigation }) => ({

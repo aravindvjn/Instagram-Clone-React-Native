@@ -8,7 +8,7 @@ const HightLights = ({
   id,
 }: {
   currentUser: UserType;
-  id: number;
+  id: string;
 }) => {
   return (
     <View style={styles.container}>

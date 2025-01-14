@@ -4,4 +4,5 @@ export interface InputType extends TextInputProps {
     placeholder?: string;
     style?: StyleProp<ViewStyle>,
     inputStyle?: StyleProp<ViewStyle>;
+    isLabel?: boolean
 }

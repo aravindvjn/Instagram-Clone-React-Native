@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import Layout from "../UI/Wrappers/Layout";
 import Header from "../components/Home/Header";
@@ -7,9 +7,10 @@ import Post from "../components/Card/Post";
 import { PostTypes, StoryTypes } from "../components/Home/type";
 import { data } from "../data";
 import Block from "../components/Helpers/Block";
+import { useFetchAllPosts } from "../hooks/useFetchAllPosts";
 
 const HomeScreen = () => {
-  const [posts, setPosts] = useState<PostTypes[]>(data);
+  const { data: posts = [], refetch, isLoading } = useFetchAllPosts();
   const [stories, setStories] = useState<StoryTypes[]>(data);
   const header = (
     <>
@@ -33,7 +34,10 @@ const HomeScreen = () => {
       <FlatList
         data={posts}
         renderItem={renderItems}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.post_id!}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
       />
     </Layout>
   );

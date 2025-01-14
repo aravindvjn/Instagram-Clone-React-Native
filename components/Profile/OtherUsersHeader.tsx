@@ -4,14 +4,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { UserType } from "./type";
 import CustomText from "../../UI/Typography/CustomText";
 import { useNavigation } from "@react-navigation/native";
+import ArrowBack from "../Helpers/ArrowBack";
 
 const OtherUsersHeader = ({ username }: UserType) => {
-  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back-outline" size={30} color={"white"} />
-      </Pressable>
+      <ArrowBack />
       <CustomText textStyle={{ fontWeight: "bold" }} fontSize={20}>
         {username}
       </CustomText>

@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 export type VisitUserType = {
   children: ReactNode;
   username?: string;
-  id?: number;
+  id?: string;
 };
 const VisitUser = ({ children, username, id }: VisitUserType) => {
   const navigation: any = useNavigation();
