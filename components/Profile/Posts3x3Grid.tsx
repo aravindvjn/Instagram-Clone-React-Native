@@ -7,7 +7,6 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { data } from "../../data";
 import { UserType } from "./type";
 import { PostTypes } from "../Home/type";
 import { Ionicons } from "@expo/vector-icons";

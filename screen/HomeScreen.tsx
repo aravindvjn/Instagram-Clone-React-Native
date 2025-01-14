@@ -5,13 +5,12 @@ import Header from "../components/Home/Header";
 import Stories from "../components/Home/Stories";
 import Post from "../components/Card/Post";
 import { PostTypes, StoryTypes } from "../components/Home/type";
-import { data } from "../data";
 import Block from "../components/Helpers/Block";
 import { useFetchAllPosts } from "../hooks/useFetchAllPosts";
 
 const HomeScreen = () => {
   const { data: posts = [], refetch, isLoading } = useFetchAllPosts();
-  const [stories, setStories] = useState<StoryTypes[]>(data);
+  const [stories, setStories] = useState<StoryTypes[]>([]);
   const header = (
     <>
       <Header />

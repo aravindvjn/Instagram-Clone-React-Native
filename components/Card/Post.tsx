@@ -22,6 +22,7 @@ const Post = ({
   post_id,
   liked_users,
 }: PostTypes) => {
+  console.log(post_id, id);
   const { width } = useWindowDimensions();
   const { data: user, isLoading } = useCurrentUser();
   const styles = StyleSheet.create({

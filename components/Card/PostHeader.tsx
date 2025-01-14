@@ -6,7 +6,6 @@ import VisitUser from "../Helpers/VisitUser";
 import { PostTypes } from "../Home/type";
 
 const PostHeader = ({ id, profilePic, username, locations }: PostTypes) => {
-  console.log(id,"==id")
   return (
     <View style={styles.container}>
       <VisitUser id={id}>

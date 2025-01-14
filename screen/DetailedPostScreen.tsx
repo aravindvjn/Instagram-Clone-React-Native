@@ -5,6 +5,7 @@ import Post from "../components/Card/Post";
 import { useFetchPost } from "../hooks/useFetchPostById";
 import ArrowBack from "../components/Helpers/ArrowBack";
 import CustomText from "../UI/Typography/CustomText";
+import ArrowBackHeader from "../components/Helpers/ArrowBackHeader";
 
 const DetailedPostScreen = ({ route }: { route: any }) => {
   const { params } = route;
@@ -23,22 +24,9 @@ const DetailedPostScreen = ({ route }: { route: any }) => {
       </Layout>
     );
   }
-  console.log(data);
   return (
     <Layout>
-      <View
-        style={{
-          flexDirection: "row",
-          padding: 16,
-          alignItems: "center",
-          gap: 15,
-        }}
-      >
-        <ArrowBack />
-        <CustomText textStyle={{ fontWeight: "bold" }} fontSize={20}>
-          Posts
-        </CustomText>
-      </View>
+      <ArrowBackHeader heading="Posts" />
       <Post {...data?.post} {...data?.user} />
     </Layout>
   );

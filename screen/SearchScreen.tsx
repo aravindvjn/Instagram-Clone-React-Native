@@ -9,7 +9,6 @@ import React from "react";
 import Layout from "../UI/Wrappers/Layout";
 import Categories from "../components/Search/Categories";
 import SearchInput from "../components/Search/SearchInput";
-import { data } from "../data";
 import PhotoGrid from "../components/Search/PhotoGrid";
 
 const SearchScreen = () => {

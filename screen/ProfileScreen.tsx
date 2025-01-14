@@ -5,7 +5,6 @@ import Header from "../components/Profile/Header";
 import HightLights from "../components/Profile/HightLights";
 import Posts3x3Grid from "../components/Profile/Posts3x3Grid";
 import { UserType } from "../components/Profile/type";
-import { users } from "../data/users";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useIsFocused, useRoute, RouteProp } from "@react-navigation/native";
 import { useFetchUser } from "../hooks/useFetchUser";

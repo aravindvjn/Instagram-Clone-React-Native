@@ -3,24 +3,20 @@ import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { UserType } from "./components/Profile/type";
 import AuthScreen from "./screen/AuthScreen";
 import HomeScreen from "./screen/HomeScreen";
 import SearchScreen from "./screen/SearchScreen";
-import LikeScreen from "./screen/LikeScreen";
 import ProfileScreen from "./screen/ProfileScreen";
 import { COLORS } from "./global/constants/color";
-import { Ionicons } from "@expo/vector-icons";
 import ReelsScreen from "./screen/ReelsScreen";
 import CreateScreen from "./screen/CreateScreen";
 import Icons from "./UI/Icons/Icons";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import Profile from "./components/Images/Profile";
-import { data } from "./data";
 import Layout from "./UI/Wrappers/Layout";
 import Center from "./UI/Wrappers/Center";
 import DetailedPostScreen from "./screen/DetailedPostScreen";
+import ChatListScreen from "./screen/ChatListScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,6 +49,7 @@ const Routes = () => {
         {!!user && (
           <Stack.Screen name="DetailedPost" component={DetailedPostScreen} />
         )}
+        {!!user && <Stack.Screen name="ChatLists" component={ChatListScreen} />}
       </Stack.Navigator>
     </NavigationContainer>
   );

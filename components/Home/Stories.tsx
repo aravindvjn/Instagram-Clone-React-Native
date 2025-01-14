@@ -9,7 +9,7 @@ import { COLORS } from "../../global/constants/color";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Stories = ({ stories }: { stories: StoryTypes[] }) => {
-  const {data} = useCurrentUser()
+  const { data } = useCurrentUser();
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   },
   storyContainer: {
     margin: 8,
+    marginTop: 0,
     gap: 5,
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.6)",
@@ -57,7 +58,7 @@ export const SingleStory = ({
   addStory,
 }: StoryTypes) => {
   return (
-    <Center style={{ height: 130 }}>
+    <Center style={{ minHeight: 110 }}>
       <Pressable
         style={[
           styles.storyContainer,
