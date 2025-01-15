@@ -36,6 +36,46 @@ export const addPost = async ({
   }
 };
 
+export const addReel = async ({
+  videoUri,
+  userId,
+  caption,
+  idToken,
+}: {
+  videoUri: string;
+  userId: string;
+  caption: string;
+  idToken: string;
+}) => {
+  try {
+    const newPost = {
+      user_id: userId,
+      caption: caption,
+      video_url: videoUri,
+      createdAt: new Date().toISOString(),
+    };
+
+    const result = await axios.post(
+      `${firebaseDatabaseURL}/reels.json?auth=${idToken}`,
+      newPost
+    );
+
+    if (result.data && result.data.name) { 
+      return { 
+        status: true, 
+        message: 'Video post added successfully.', 
+      };
+    }
+
+    return { status: false, message: 'Failed to add video post.' };
+  } catch (error) {
+    console.error("Error adding video post:", error);
+    return { status: false, message: 'Error adding video post.' };
+  }
+};
+
+
+
 export const toggleLike = async ({
   userId,
   postId,

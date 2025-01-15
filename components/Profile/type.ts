@@ -5,8 +5,8 @@ export interface UserType {
     username?: string;
     name?: string;
     noPosts?: number;
-    followers?: number;
-    following?: number;
+    followers?: string[];
+    following?: string[];
     isPrivate?: boolean;
     bio?: string;
     currentUser?: UserType;

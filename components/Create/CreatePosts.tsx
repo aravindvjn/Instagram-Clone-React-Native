@@ -6,14 +6,16 @@ import CustomButton from "../../UI/Buttons/CustomButton";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import { convertToBase64 } from "../../global/functions/helperFunctions";
 import { handleUpload } from "../../global/functions/uploadMedia";
-import { addPost } from "../../global/functions/postRequests";
+import { addPost, addReel } from "../../global/functions/postRequests";
 import { PostTypes } from "../Home/type";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Input from "../../UI/Inputs/Input";
 import { useQueryClient } from "@tanstack/react-query";
+import { ResizeMode, Video } from "expo-av";
+import ProgressLoader from "../Helpers/ProgressLoader";
 
 const CreatePost: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
   const { width } = useWindowDimensions();
   const isFocused = useIsFocused();
   const queryClient = useQueryClient();
@@ -26,7 +28,9 @@ const CreatePost: React.FC = () => {
   const { name } = useRoute();
   const { data: user } = useCurrentUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const fetchImage = async () => {
+  const [mediaTypes, setMediaTypes] = useState<string>();
+  const [progress, setProgress] = useState<string | number>();
+  const fetchMedia = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       Alert.alert(
@@ -37,64 +41,93 @@ const CreatePost: React.FC = () => {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      setProgress("");
+      if (result.assets[0]?.duration! < 30000) {
+        setMediaTypes(result?.assets[0]?.type);
+        setSelectedMedia(result.assets[0].uri);
+        return;
+      }
+      Alert.alert("Failed", "Video duration should not exceed 30 seconds.");
     }
   };
   const addPostHandler = async () => {
-    if (!selectedImage || !user?.id || !user?.idToken) return;
+    if (!selectedMedia || !user?.id || !user?.idToken) return;
     try {
       setIsLoading(true);
-      const base64 = await convertToBase64(selectedImage);
+      setProgress(10);
+      const base64 = await convertToBase64(selectedMedia);
       if (!base64) return;
-      const uri = await handleUpload(base64);
-      if (!uri) return;
-      const res = await addPost({
-        data: {
+      const uri = await handleUpload(base64, mediaTypes, setProgress);
+      if (!uri || typeof uri !== "string") return;
+      let res;
+      if (mediaTypes === "video") {
+        res = await addReel({
           caption: inputs?.caption || "",
-          id: inputs?.id,
-          uri: uri,
-          locations: inputs?.locations,
-        },
-        userId: user?.id,
-        idToken: user?.idToken,
-      });
+          idToken: user?.idToken,
+          videoUri: uri,
+          userId: user?.id,
+        });
+      } else {
+        res = await addPost({
+          data: {
+            caption: inputs?.caption || "",
+            id: inputs?.id,
+            uri: uri,
+            locations: inputs?.locations,
+          },
+          userId: user?.id,
+          idToken: user?.idToken,
+        });
+      }
       if (res.status) {
         Alert.alert("Success", "Post created successfully!");
         queryClient.invalidateQueries<any>(["user"]);
         setInputs({ caption: "", locations: "", uri: "", id: "" });
-        setSelectedImage(null);
+        setSelectedMedia(null);
       } else {
         Alert.alert(res?.message);
       }
       setIsLoading(false);
+      setProgress(0);
     } catch {
       Alert.alert("Error", "An error occurred while creating the post.");
     }
   };
   useEffect(() => {
     if (name === "Create" && isFocused) {
-      fetchImage();
+      fetchMedia();
     }
   }, [isFocused]);
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      {selectedImage && (
+      {selectedMedia && (
         <Header isLoading={isLoading} onPress={addPostHandler} />
       )}
-      {selectedImage ? (
+      {progress && <ProgressLoader progress={Number(progress)} />}
+      {selectedMedia ? (
         <View style={{ gap: 15 }}>
-          <Image
-            source={{ uri: selectedImage }}
-            style={{ width: width - 32, height: width - 32 }}
-          />
+          {mediaTypes === "video" ? (
+            <Video
+              source={{ uri: selectedMedia }}
+              isLooping
+              style={{ width: width - 32, height: width - 32 }}
+              resizeMode={ResizeMode.CONTAIN}
+              useNativeControls
+            />
+          ) : (
+            <Image
+              source={{ uri: selectedMedia }}
+              style={{ width: width - 32, height: width - 32 }}
+            />
+          )}
           <Input
             value={inputs?.caption}
             inputStyle={[{ height: 100 }]}
@@ -104,14 +137,16 @@ const CreatePost: React.FC = () => {
             multiline
             placeholder="Share your thoughts."
           />
-          <Input
-            value={inputs?.locations}
-            maxLength={15}
-            onChangeText={(text) =>
-              setInputs((prev) => ({ ...prev, locations: text }))
-            }
-            placeholder="location"
-          />
+          {mediaTypes !== "video" && (
+            <Input
+              value={inputs?.locations}
+              maxLength={15}
+              onChangeText={(text) =>
+                setInputs((prev) => ({ ...prev, locations: text }))
+              }
+              placeholder="location"
+            />
+          )}
         </View>
       ) : (
         <View>
@@ -121,9 +156,8 @@ const CreatePost: React.FC = () => {
           />
         </View>
       )}
-
-      <CustomButton style={{ marginTop: 20 }} onPress={fetchImage}>
-        {selectedImage ? "Try New" : "Select Photo"}
+      <CustomButton style={{ marginTop: 20 }} onPress={() => fetchMedia()}>
+        {selectedMedia ? "Try New" : "Select Photo"}
       </CustomButton>
     </View>
   );

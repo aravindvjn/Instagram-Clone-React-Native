@@ -15,7 +15,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const Posts3x3Grid = (props: UserType) => {
   const { id, posts = [] } = props;
-  console.log(props);
   const [page, setPage] = useState<"grid" | "tags">("grid");
   const changePageHandler = () => {
     setPage(page === "grid" ? "tags" : "grid");

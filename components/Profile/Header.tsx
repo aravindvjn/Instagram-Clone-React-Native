@@ -20,6 +20,7 @@ import EditProfile from "./EditProfile";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigation } from "@react-navigation/native";
+import { decodeFollowStatus } from "../../global/functions/helperFunctions";
 
 export type StoryStatusType =
   | "Viewed"
@@ -32,8 +33,8 @@ const Header = ({
   name,
   profilePic,
   bio,
-  followers = 0,
-  following = 0,
+  followers,
+  following,
   isPrivate,
   posts = [],
   currentUser,
@@ -75,9 +76,9 @@ const Header = ({
         </View>
 
         <View style={styles.countContainer}>
-          <Counts count={posts?.length} text="Posts" />
-          <Counts count={followers} text="Followers" />
-          <Counts count={following} text="Following" />
+          <Counts id={id} count={posts?.length} text="Posts" />
+          <Counts id={id} count={followers?.length || 0} text="Followers" />
+          <Counts id={id} count={following?.length || 0} text="Following" />
         </View>
       </View>
       <View style={styles.detailsContainer}>
@@ -93,7 +94,15 @@ const Header = ({
             Edit Profile
           </CustomButton>
         ) : (
-          <OperationButtons status="Following" />
+          <OperationButtons
+            userId={id}
+            followStatus={decodeFollowStatus(
+              currentUser?.id!,
+              followers!,
+              following!
+            )}
+            followerId={currentUser?.id}
+          />
         )}
         {currentUser?.id === id && (
           <CustomButton onPress={logoutHandler} style={styles.editButton}>
@@ -157,7 +166,11 @@ const styles = StyleSheet.create({
 const AccountDropDown = ({ currentUser }: UserType) => {
   return (
     <Center style={styles.accountDropDown}>
-      <Ionicons name="lock-closed-outline" size={20} color={COLORS.TEXT_COLOR} />
+      <Ionicons
+        name="lock-closed-outline"
+        size={20}
+        color={COLORS.TEXT_COLOR}
+      />
       <CustomText fontSize={20} textStyle={styles.accountDropDownText}>
         {currentUser?.username}
       </CustomText>

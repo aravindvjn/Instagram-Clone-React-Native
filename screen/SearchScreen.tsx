@@ -10,13 +10,15 @@ import Layout from "../UI/Wrappers/Layout";
 import Categories from "../components/Search/Categories";
 import SearchInput from "../components/Search/SearchInput";
 import PhotoGrid from "../components/Search/PhotoGrid";
+import { useFetchAllPosts } from "../hooks/useFetchAllPosts";
 
 const SearchScreen = () => {
+  const { data: posts = [], isLoading, refetch } = useFetchAllPosts();
   return (
     <Layout>
       <SearchInput />
       <Categories />
-      <PhotoGrid />
+      <PhotoGrid posts={posts} isLoading={isLoading} />
     </Layout>
   );
 };

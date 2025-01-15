@@ -7,9 +7,13 @@ const fetchUserDataById = async (userId: string) => {
         const response = await axios.get(`${firebaseDatabaseURL}/users/${userId}.json?`);
 
         if (response.data) {
+            const followersResponse = await axios.get(`${firebaseDatabaseURL}/users/${userId}/followers.json?`);
+            const followingResponse = await axios.get(`${firebaseDatabaseURL}/users/${userId}/following.json?`);
 
             const userData = {
                 ...response.data,
+                followers: followersResponse.data ? Object.keys(followersResponse.data) : [],
+                following: followingResponse.data ? Object.keys(followingResponse.data) : [],
                 posts: response.data.posts
                     ? Object.entries(response.data.posts).map(([postId, post]: [string, any]) => ({
                         ...post,

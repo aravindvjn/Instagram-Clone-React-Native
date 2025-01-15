@@ -3,24 +3,30 @@ import React from "react";
 import CustomText from "../../UI/Typography/CustomText";
 import { COLORS } from "../../global/constants/color";
 import Center from "../../UI/Wrappers/Center";
-import { HeaderPathtype, PathType } from "./type";
+import { PathType, PathValues } from "./type";
 
-const Header = ({ path, setPath }: HeaderPathtype) => {
+const HeaderNavigation = ({ path, setPath }: PathType) => {
   const changePath = () => {
-    setPath(path === "Following" ? "You" : "Following");
+    setPath(path === "Following" ? "Followers" : "Following");
   };
 
   return (
     <Pressable onPress={changePath} style={styles.container}>
+      <SingleBlock path={path} text="Followers" />
       <SingleBlock path={path} text="Following" />
-      <SingleBlock path={path} text="You" />
     </Pressable>
   );
 };
 
-export default Header;
+export default HeaderNavigation;
 
-export const SingleBlock = ({ text, path }: { text: PathType; path: PathType }) => {
+export const SingleBlock = ({
+  text,
+  path,
+}: {
+  text: PathValues;
+  path: PathValues;
+}) => {
   return (
     <Center style={path === text && styles.textBlock}>
       <CustomText fontSize={16} style={styles.text}>

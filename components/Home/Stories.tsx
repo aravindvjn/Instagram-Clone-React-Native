@@ -7,26 +7,41 @@ import { StoryTypes } from "./type";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Skeleton, { skeletonStyles } from "../Loadings/Skeletons";
 
 const Stories = ({ stories }: { stories: StoryTypes[] }) => {
-  const { data } = useCurrentUser();
+  const { data, isLoading } = useCurrentUser();
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         <SingleStory profile_url={data?.profilePic} username="Your Story" />
-        {stories?.map((story) => (
-          <SingleStory
-            key={story.username}
-            profile_url={story?.profile_url}
-            username={story?.username}
-          />
-        ))}
+        {!isLoading
+          ? stories?.map((story) => (
+              <SingleStory
+                key={story.username}
+                profile_url={story?.profile_url}
+                username={story?.username}
+              />
+            ))
+          : Array(5)
+              .fill(null)
+              .map((_, index) => <SingleStorySkeleton key={index} />)}
       </ScrollView>
     </View>
   );
 };
 
 export default Stories;
+
+export const SingleStorySkeleton = () => {
+  return (
+    <Center style={{ height: 110 }}>
+      <View style={[styles.storyContainer, { borderColor: "transparent" }]}>
+        <Skeleton h={62} w={62} />
+      </View>
+    </Center>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -54,9 +69,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 1,
     borderRadius: 50,
-    backgroundColor:'white',
+    backgroundColor: "white",
     right: -2,
-    bottom:-2
+    bottom: -2,
   },
 });
 

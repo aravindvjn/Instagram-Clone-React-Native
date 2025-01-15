@@ -3,7 +3,7 @@ import { PostTypes } from "../components/Home/type";
 export const reels: PostTypes[] = [
     {
         id: 1,
-        uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        uri: "https://res.cloudinary.com/dmtvealue/video/upload/v1736945457/xsmmwspsx5wsubqnsg0c.mp4",
         caption: "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself...",
         likes_count: 1024,
         locations: "By Blender Foundation",

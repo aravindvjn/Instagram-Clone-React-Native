@@ -6,8 +6,10 @@ export type HeaderPathtype = {
 }
 export type FollowStatusType = 'Following' | 'Requested' | 'Follow Back' | 'Follow' | 'Message' | 'Accept';
 export interface FollowRequestType {
-    username: string,
+    username?: string,
     profile_url?: string;
-    followStatus?: FollowRequestType,
+    followStatus?: FollowStatusType,
     time?: string
+    userId?: string;
+    followerId?: string;
 }

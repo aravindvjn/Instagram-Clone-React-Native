@@ -5,8 +5,8 @@ import Header from "../components/Home/Header";
 import Stories from "../components/Home/Stories";
 import Post from "../components/Card/Post";
 import { PostTypes, StoryTypes } from "../components/Home/type";
-import Block from "../components/Helpers/Block";
 import { useFetchAllPosts } from "../hooks/useFetchAllPosts";
+import PostSkeleton from "../components/Card/PostSkeleton";
 
 const HomeScreen = () => {
   const { data: posts = [], refetch, isLoading } = useFetchAllPosts();
@@ -17,7 +17,16 @@ const HomeScreen = () => {
       <Stories stories={stories} />
     </>
   );
-
+  if (isLoading) {
+    return (
+      <Layout>
+        <Header />
+        <Stories stories={stories} />
+        <PostSkeleton />
+        <PostSkeleton />
+      </Layout>
+    );
+  }
   return (
     <Layout noScrollView>
       <FlatList
@@ -25,7 +34,7 @@ const HomeScreen = () => {
         renderItem={({ item }) => <Post {...item} />}
         ListHeaderComponent={header}
         keyExtractor={(item) => item.post_id!}
-        contentContainerStyle={{ paddingBottom: 250 }}
+        contentContainerStyle={{ paddingBottom: 30 }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={refetch} />
         }

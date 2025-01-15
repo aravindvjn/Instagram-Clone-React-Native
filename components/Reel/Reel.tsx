@@ -7,26 +7,18 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { ResizeMode, Video } from "expo-av";
-import CreatorDetails from "./CreatorDetails";
+import CreatorDetails, { ReelDetailsSkeleton } from "./CreatorDetails";
 import { PostTypes } from "../Home/type";
 import { Ionicons } from "@expo/vector-icons";
 import ReelOperations from "./ReelOperations";
+import { ReelTypes } from "./type";
+import { useFetchBasicUser } from "../../hooks/useFetchBasicUserData";
 
-export interface ReelType extends PostTypes {
-  isActive?: boolean;
-}
-
-const Reel = ({
-  id,
-  username,
-  profilePic,
-  caption,
-  uri = "",
-  isActive,
-}: ReelType) => {
+const Reel = ({ userId, caption, videoUrl = "", isActive }: ReelTypes) => {
   const { height, width } = useWindowDimensions();
   const videoRef = useRef<any>(null);
   const [isMute, setIsMute] = useState<boolean>(false);
+  const { data: user, isLoading } = useFetchBasicUser(userId!);
   useEffect(() => {
     if (isActive && videoRef.current) {
       videoRef.current?.playAsync();
@@ -77,7 +69,7 @@ const Reel = ({
       )}
       <Video
         ref={videoRef}
-        source={{ uri }}
+        source={{ uri: videoUrl }}
         style={styles.reel}
         isLooping
         isMuted={isMute}
@@ -86,7 +78,16 @@ const Reel = ({
         shouldPlay={isActive}
       />
       <ReelOperations />
-      <CreatorDetails caption={caption} user={{ username, profilePic, id }} />
+      {isLoading ? (
+        <ReelDetailsSkeleton />
+      ) : (
+        <CreatorDetails
+          caption={caption}
+          userId={user?.id}
+          username={user?.username}
+          profilePic={user?.profilePic}
+        />
+      )}
     </Pressable>
   );
 };

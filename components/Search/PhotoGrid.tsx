@@ -11,8 +11,7 @@ import { useFetchAllPosts } from "../../hooks/useFetchAllPosts";
 import Layout from "../../UI/Wrappers/Layout";
 import { useNavigation } from "@react-navigation/native";
 
-const PhotoGrid = () => {
-  const { data: posts = [], isLoading } = useFetchAllPosts();
+const PhotoGrid = ({ posts = [], isLoading }: any) => {
   if (isLoading) {
     return (
       <Layout>

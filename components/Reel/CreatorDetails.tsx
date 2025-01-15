@@ -3,22 +3,28 @@ import React, { useState } from "react";
 import Profile from "../Images/Profile";
 import VisitUser from "../Helpers/VisitUser";
 import CustomText from "../../UI/Typography/CustomText";
-import { ReelType } from "./type";
+import { ReelType, ReelTypes } from "./type";
 import CustomButton from "../../UI/Buttons/CustomButton";
 import Center from "../../UI/Wrappers/Center";
+import Skeleton, { skeletonStyles } from "../Loadings/Skeletons";
 
-const CreatorDetails = ({ user, caption }: ReelType) => {
+const CreatorDetails = ({
+  username,
+  profilePic,
+  userId,
+  caption,
+}: ReelTypes) => {
   const [noLines, setNoLines] = useState<number | undefined>(1);
   return (
     <View style={styles.container}>
-     <VisitUser id={user?.id}>
-     <Profile size={40} profile_url={user?.profilePic} />
-     </VisitUser>
+      <VisitUser id={userId}>
+        <Profile size={40} profile_url={profilePic} />
+      </VisitUser>
       <View>
         <Center style={styles.row}>
-          <VisitUser id={user?.id}>
+          <VisitUser id={userId}>
             <CustomText fontSize={14} textStyle={styles.username}>
-              {user?.username || "isudgugsg "}
+              {username || "Instagram User"}
             </CustomText>
           </VisitUser>
           <CustomButton style={styles.button}>Follow</CustomButton>
@@ -41,12 +47,21 @@ const CreatorDetails = ({ user, caption }: ReelType) => {
 
 export default CreatorDetails;
 
+export const ReelDetailsSkeleton = () => {
+  return (
+    <View style={styles.container}>
+      <Skeleton style={[skeletonStyles.profile,{width:40,height:40}]} />
+      <Skeleton  />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
     left: 0,
     right: 0,
-    bottom: 70,
+    bottom: 60,
     flexDirection: "row",
     alignItems: "center",
     gap: 10,

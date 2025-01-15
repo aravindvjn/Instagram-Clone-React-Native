@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import Icons from "../../UI/Icons/Icons";
-import Entypo from '@expo/vector-icons/Entypo';;
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Entypo from "@expo/vector-icons/Entypo";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const ReelOperations = () => {
   const [liked, setLiked] = useState<boolean>(false);

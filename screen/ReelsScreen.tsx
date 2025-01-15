@@ -8,38 +8,40 @@ import {
 } from "react-native";
 import Layout from "../UI/Wrappers/Layout";
 import Reel from "../components/Reel/Reel";
-import { reels } from "../data/reels";
 import { useIsFocused } from "@react-navigation/native";
+import { useRandomReels } from "../hooks/useFetchReels";
+import { ReelTypes } from "../components/Reel/type";
+import ReelSkeleton from "../components/Reel/ReelSkeleton";
 
 const { height } = Dimensions.get("window");
 
 const ReelsScreen = () => {
   const [activeReel, setActiveReel] = useState<string | null>(null);
   const isFocused = useIsFocused();
-  const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: any[] }) => {
-      if (viewableItems.length > 0) {
-        const firstVisibleItem = viewableItems[0];
-        setActiveReel(firstVisibleItem.item.id!.toString());
-      }
+  const { data: reels = [], isLoading, refetch } = useRandomReels();
+  const onViewableItemsChanged = ({
+    viewableItems,
+  }: {
+    viewableItems: any[];
+  }) => {
+    if (viewableItems.length > 0) {
+      const firstVisibleItem = viewableItems[0];
+      setActiveReel(firstVisibleItem?.item?.reelId);
     }
-  ).current;
-
+  };
   const viewabilityConfig = {
     itemVisiblePercentThreshold: 50,
   };
-
+  if (isLoading) {
+    return <ReelSkeleton />;
+  }
   return (
     <Layout noScrollView>
       <FlatList
         data={reels}
-        keyExtractor={(item) => item.id!.toString()}
-        renderItem={({ item }) => (
-          <Reel
-            key={item.id}
-            {...item}
-            isActive={item.id!.toString() === activeReel && isFocused}
-          />
+        keyExtractor={(item) => item.reelId!}
+        renderItem={({ item }: { item: ReelTypes }) => (
+          <Reel {...item} isActive={item.reelId === activeReel && isFocused} />
         )}
         pagingEnabled
         showsVerticalScrollIndicator={false}
@@ -48,7 +50,9 @@ const ReelsScreen = () => {
         contentContainerStyle={{ paddingBottom: height }}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
-        refreshControl={<RefreshControl refreshing={false} />}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
       />
     </Layout>
   );

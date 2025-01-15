@@ -1,3 +1,4 @@
+
 export interface ReelType {
     reel_id?: number;
     user?: {
@@ -7,4 +8,15 @@ export interface ReelType {
     };
     uri?: string;
     caption?: string
+}
+
+export interface ReelTypes {
+    caption?: string;
+    createdAt?: string;
+    userId?: string;
+    videoUrl?: string
+    reelId?: string;
+    isActive?: boolean;
+    username?: string;
+    profilePic?: string;
 }

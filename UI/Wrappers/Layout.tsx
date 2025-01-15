@@ -1,4 +1,11 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import React from "react";
 import { WrapperType } from "./type";
 import { StatusBar } from "expo-status-bar";
@@ -10,13 +17,14 @@ import SetUserNameAler from "../../components/Home/SetUserNameAler";
 
 const Layout = ({ children, style, padding, noScrollView }: WrapperType) => {
   const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
   const styles = StyleSheet.create({
     container: {
-      minHeight: "110%",
+      minHeight: height,
       padding: padding,
     },
     safeArea: {
-      minHeight: "110%",
+      minHeight: height,
       backgroundColor: COLORS.BACKGROUND_COLOR,
       paddingTop: insets.top,
     },

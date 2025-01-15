@@ -19,6 +19,8 @@ import DetailedPostScreen from "./screen/DetailedPostScreen";
 import ChatListScreen from "./screen/ChatListScreen";
 import LikeScreen from "./screen/LikeScreen";
 import MessagesScreen from "./screen/MessagesScreen";
+import FollowListScreen from "./screen/FollowListScreen";
+import WelcomeScreen from "./components/Loadings/WelcomeScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,22 +31,15 @@ const Routes = () => {
     failed = true;
   }
   if (isLoading && !failed) {
-    return (
-      <Layout>
-        <Center>
-          <ActivityIndicator size={"large"} />
-        </Center>
-      </Layout>
-    );
+    return <WelcomeScreen />;
   }
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation:"slide_from_right"
+          animation: "slide_from_right",
         }}
-        
       >
         {(!!!user || isError) && (
           <Stack.Screen name="Auth" component={AuthScreen} />
@@ -56,6 +51,9 @@ const Routes = () => {
         {!!user && <Stack.Screen name="ChatLists" component={ChatListScreen} />}
         {!!user && <Stack.Screen name="Liked" component={LikeScreen} />}
         {!!user && <Stack.Screen name="Messages" component={MessagesScreen} />}
+        {!!user && (
+          <Stack.Screen name="FollowList" component={FollowListScreen} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

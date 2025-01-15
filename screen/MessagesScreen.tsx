@@ -150,7 +150,7 @@ const MessagesScreen = () => {
         <FlatList
           data={data}
           renderItem={renderItems}
-          contentContainerStyle={{ paddingBottom: 500 }}
+          contentContainerStyle={{ paddingBottom: 250 }}
         />
       </View>
     </Layout>
