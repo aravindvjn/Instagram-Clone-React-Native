@@ -7,7 +7,7 @@ import { COLORS } from "../../global/constants/color";
 const Header = () => {
   return (
     <View>
-      <ArrowBackHeader heading="Chats" />
+      <ArrowBackHeader  />
       <View style={styles.container}>
         <CustomText fontSize={16} textStyle={[styles.text]}>
           Messages

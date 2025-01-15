@@ -10,6 +10,7 @@ import { ResizeMode, Video } from "expo-av";
 import CreatorDetails from "./CreatorDetails";
 import { PostTypes } from "../Home/type";
 import { Ionicons } from "@expo/vector-icons";
+import ReelOperations from "./ReelOperations";
 
 export interface ReelType extends PostTypes {
   isActive?: boolean;
@@ -18,7 +19,7 @@ export interface ReelType extends PostTypes {
 const Reel = ({
   id,
   username,
-  profile_url,
+  profilePic,
   caption,
   uri = "",
   isActive,
@@ -84,7 +85,8 @@ const Reel = ({
         useNativeControls={false}
         shouldPlay={isActive}
       />
-      <CreatorDetails caption={caption} user={{ username, profile_url,id }} />
+      <ReelOperations />
+      <CreatorDetails caption={caption} user={{ username, profilePic, id }} />
     </Pressable>
   );
 };

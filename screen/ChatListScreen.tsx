@@ -11,23 +11,12 @@ const ChatListScreen = () => {
   for (const post of Object.entries(chats)) {
     newChats = Object.entries(post);
   }
-  console.log(newChats);
-  const renderItems = ({ item, index }: any) => {
-    if (index === 0) {
-      return (
-        <View>
-          <Header />
-          <SingleChat chat={item} />
-        </View>
-      );
-    }
-    return <SingleChat chat={item} />;
-  };
   return (
     <Layout noScrollView>
       <FlatList
+        ListHeaderComponent={<Header />}
         data={newChats}
-        renderItem={renderItems}
+        renderItem={({ item }) => <SingleChat chat={item} />}
         refreshControl={
           <RefreshControl refreshing={false} onRefresh={() => true} />
         }

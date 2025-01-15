@@ -12,7 +12,7 @@ const CreatorDetails = ({ user, caption }: ReelType) => {
   return (
     <View style={styles.container}>
      <VisitUser id={user?.id}>
-     <Profile size={40} profile_url={user?.profile_url} />
+     <Profile size={40} profile_url={user?.profilePic} />
      </VisitUser>
       <View>
         <Center style={styles.row}>

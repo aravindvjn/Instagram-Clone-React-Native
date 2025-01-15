@@ -9,6 +9,7 @@ interface UserResponse {
       imageUrl?: string;
       content?: string;
       locations?: string;
+      createdAt?: string;
     };
   };
   profilePic?: string;
@@ -42,6 +43,7 @@ const fetchAllPosts = async (): Promise<PostTypes[]> => {
               likes_count: likedUsers.length,
               liked_users: likedUsers,
               locations: post?.locations || '',
+              createdAt: post?.createdAt || ''
             });
           }
         }

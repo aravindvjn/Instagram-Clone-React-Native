@@ -90,7 +90,7 @@ const EditProfile = ({ isVisible, setIsVisible }: EditProfileType) => {
     return null;
   }
   return (
-    <Modal visible={isVisible}>
+    <Modal visible={isVisible} animationType="slide">
       <Layout style={{ paddingHorizontal: 16 }}>
         <View style={styles.header}>
           <ArrowBack onPress={() => setIsVisible(false)} />

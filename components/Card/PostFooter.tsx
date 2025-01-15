@@ -4,7 +4,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
 import CustomText from "../../UI/Typography/CustomText";
 import { PostTypes } from "../Home/type";
-import { formateFollow } from "../../global/functions/helperFunctions";
+import {
+  formateDate,
+  formateFollow,
+} from "../../global/functions/helperFunctions";
 import Icons from "../../UI/Icons/Icons";
 import { toggleLike } from "../../global/functions/postRequests";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -20,6 +23,7 @@ const PostFooter = ({
   likes_count = 0,
   post_id,
   isLiked = false,
+  createdAt,
 }: LikePlusPostType) => {
   const [liked, setLiked] = useState<boolean>(isLiked);
   const handleLiked = async () => {
@@ -49,13 +53,16 @@ const PostFooter = ({
       </View>
       <View>
         <CustomText fontSize={13} textStyle={styles.bold}>
-          {likes_count} Likes
+          {liked ? likes_count + 1 : likes_count} Likes
         </CustomText>
         <CustomText>
           <CustomText fontSize={13} style={styles.bold}>
             {username}
           </CustomText>
           <CustomText fontSize={13}> {caption}</CustomText>
+        </CustomText>
+        <CustomText textStyle={{ opacity: 0.6 }} fontSize={11}>
+          {formateDate(createdAt || "")}
         </CustomText>
       </View>
     </View>

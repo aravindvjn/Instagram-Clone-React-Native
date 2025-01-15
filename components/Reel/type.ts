@@ -1,9 +1,9 @@
 export interface ReelType {
     reel_id?: number;
     user?: {
-        id?: number;
+        id?: string;
         username?: string;
-        profile_url?: string;
+        profilePic?: string;
     };
     uri?: string;
     caption?: string

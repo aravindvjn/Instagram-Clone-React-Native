@@ -21,6 +21,7 @@ const Post = ({
   locations,
   post_id,
   liked_users,
+  createdAt
 }: PostTypes) => {
   console.log(post_id, id);
   const { width } = useWindowDimensions();
@@ -47,6 +48,7 @@ const Post = ({
         caption={caption}
         username={username}
         post_id={post_id}
+        createdAt={createdAt}
       />
     </View>
   );

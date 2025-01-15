@@ -4,11 +4,16 @@ import Profile from "../Images/Profile";
 import CustomText from "../../UI/Typography/CustomText";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
+import { useNavigation } from "@react-navigation/native";
 
 const SingleChat = ({ username, name, profilePic }: any) => {
+  const navigation: any = useNavigation();
   return (
     <View style={[styles.container, { justifyContent: "space-between" }]}>
-      <View style={styles.container}>
+      <Pressable
+        onPress={() => navigation.navigate("Messages")}
+        style={styles.container}
+      >
         <Profile profile_url={profilePic} size={46} />
         <View>
           <CustomText fontSize={14} textStyle={{ fontWeight: "bold" }}>
@@ -16,7 +21,7 @@ const SingleChat = ({ username, name, profilePic }: any) => {
           </CustomText>
           <CustomText numberOfLines={1}>Hello, How are you today?</CustomText>
         </View>
-      </View>
+      </Pressable>
       <Pressable>
         <Ionicons name="camera-outline" color={COLORS?.TEXT_COLOR} size={30} />
       </Pressable>

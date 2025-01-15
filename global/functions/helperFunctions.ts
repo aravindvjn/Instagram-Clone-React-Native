@@ -35,3 +35,34 @@ export const convertToBase64 = async (uri: string): Promise<string | null> => {
   }
 };
 
+
+
+//Formate dates
+export const formateDate=(date:string)=> {
+  const now:any = new Date();
+  const givenDate:any = new Date(date);
+  const diffInSeconds = Math.floor((now - givenDate) / 1000);
+
+  if (diffInSeconds < 60) {
+      return `${diffInSeconds} seconds ago`;
+  } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minutes ago`;
+  } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hours ago`;
+  } else if (diffInSeconds < 604800) {
+      const days = Math.floor(diffInSeconds / 86400);
+      return `${days} days ago`;
+  } else if (diffInSeconds < 2592000) {
+      const weeks = Math.floor(diffInSeconds / 604800);
+      return `${weeks} weeks ago`;
+  } else {
+      return givenDate.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+      });
+  }
+}
+

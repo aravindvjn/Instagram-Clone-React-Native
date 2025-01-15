@@ -7,7 +7,8 @@ export interface PostTypes {
     caption?: string;
     likes_count?: number;
     locations?: string;
-    liked_users?: string[]
+    liked_users?: string[],
+    createdAt?: string;
 }
 export interface StoryTypes {
     profile_url?: string;

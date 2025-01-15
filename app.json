@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "InstagramRN",
+    "name": "Instagram Clone",
     "slug": "InstagramRN",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,13 +19,24 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ],
+      "package": "com.aravind755.InstagramRN"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-video"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "8285cec0-56cf-45a7-9304-9bb1b7be1349"
+      }
+    }
   }
 }

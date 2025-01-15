@@ -50,6 +50,14 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.6)",
     borderRadius: "50%",
   },
+  addCircle: {
+    position: "absolute",
+    zIndex: 1,
+    borderRadius: 50,
+    backgroundColor:'white',
+    right: -2,
+    bottom:-2
+  },
 });
 
 export const SingleStory = ({
@@ -65,6 +73,14 @@ export const SingleStory = ({
           addStory && { borderColor: "transparent" },
         ]}
       >
+        {username === "Your Story" && (
+          <Ionicons
+            style={styles.addCircle}
+            name="add-circle"
+            size={25}
+            color={COLORS.BLUE}
+          />
+        )}
         {addStory ? (
           <Center style={styles.addStory}>
             <Ionicons name="add" color={"white"} size={35} />

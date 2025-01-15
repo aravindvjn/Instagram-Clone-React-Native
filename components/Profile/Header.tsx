@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
     height: 44,
     flexDirection: "row",
     gap: 3,
+    justifyContent: "flex-start",
+    paddingLeft: 20,
   },
   accountDropDownText: {
     fontWeight: "bold",
@@ -155,11 +157,11 @@ const styles = StyleSheet.create({
 const AccountDropDown = ({ currentUser }: UserType) => {
   return (
     <Center style={styles.accountDropDown}>
-      <Ionicons name="lock-closed" color={COLORS.TEXT_COLOR} />
-      <CustomText fontSize={16} textStyle={styles.accountDropDownText}>
+      <Ionicons name="lock-closed-outline" size={20} color={COLORS.TEXT_COLOR} />
+      <CustomText fontSize={20} textStyle={styles.accountDropDownText}>
         {currentUser?.username}
       </CustomText>
-      <Ionicons name="chevron-down" size={16} color={COLORS.TEXT_COLOR} />
+      <Ionicons name="chevron-down" size={20} color={COLORS.TEXT_COLOR} />
       <Pressable style={styles.pressableMenu}>
         <Ionicons name="menu-outline" color={COLORS.TEXT_COLOR} size={35} />
       </Pressable>

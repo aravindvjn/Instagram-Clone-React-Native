@@ -12,7 +12,9 @@ const Header = () => {
     <View style={styles.container}>
       <Instagram height={30} />
       <View style={styles.cell}>
-        <Icons name="like" size={26} />
+        <Pressable onPress={() => navigation.navigate("Liked")}>
+          <Icons name="like" size={26} />
+        </Pressable>
         <Pressable onPress={() => navigation.navigate("ChatLists")}>
           <Icons name="messenger" size={27} />
         </Pressable>

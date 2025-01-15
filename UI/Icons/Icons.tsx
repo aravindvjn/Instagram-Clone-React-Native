@@ -15,6 +15,10 @@ const iconPaths = {
   save: require("../../assets/icon/save.png"),
   search: require("../../assets/icon/search.png"),
   share: require("../../assets/icon/share.png"),
+  "reel-fill": require("../../assets/icon/reel-fill.png"),
+  "home-fill": require("../../assets/icon/home-fill.png"),
+  "create-fill": require("../../assets/icon/create-fill.png"),
+  "search-fill": require("../../assets/icon/search-fill.png"),
 };
 
 const Icons = ({ name = "save", size = 32, focused }: IconType) => {
@@ -22,7 +26,7 @@ const Icons = ({ name = "save", size = 32, focused }: IconType) => {
 
   return (
     <Image
-      style={[styles.icon, { height: size+2, width: size+2 }]}
+      style={[styles.icon, { height: size + 2, width: size + 2 }]}
       source={iconSource}
       resizeMode="contain"
     />

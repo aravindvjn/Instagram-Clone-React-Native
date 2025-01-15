@@ -17,6 +17,8 @@ import Layout from "./UI/Wrappers/Layout";
 import Center from "./UI/Wrappers/Center";
 import DetailedPostScreen from "./screen/DetailedPostScreen";
 import ChatListScreen from "./screen/ChatListScreen";
+import LikeScreen from "./screen/LikeScreen";
+import MessagesScreen from "./screen/MessagesScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,7 +42,9 @@ const Routes = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+          animation:"slide_from_right"
         }}
+        
       >
         {(!!!user || isError) && (
           <Stack.Screen name="Auth" component={AuthScreen} />
@@ -50,6 +54,8 @@ const Routes = () => {
           <Stack.Screen name="DetailedPost" component={DetailedPostScreen} />
         )}
         {!!user && <Stack.Screen name="ChatLists" component={ChatListScreen} />}
+        {!!user && <Stack.Screen name="Liked" component={LikeScreen} />}
+        {!!user && <Stack.Screen name="Messages" component={MessagesScreen} />}
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -85,7 +91,7 @@ const MainRoutes = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icons name={"home"} size={size} />
+            <Icons name={focused ? "home-fill" : "home"} size={size} />
           ),
         }}
       />
@@ -94,7 +100,7 @@ const MainRoutes = () => {
         component={SearchScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icons name={"search"} size={size} />
+            <Icons name={focused ? "search-fill" : "search"} size={size} />
           ),
         }}
       />
@@ -103,7 +109,7 @@ const MainRoutes = () => {
         component={CreateScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icons name={"create"} size={size} />
+            <Icons name={focused ? "create-fill" : "create"} size={size} />
           ),
         }}
       />
@@ -112,7 +118,7 @@ const MainRoutes = () => {
         component={ReelsScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icons name={"reel"} size={size} />
+            <Icons name={focused ? "reel-fill" : "reel"} size={size} />
           ),
         }}
       />
