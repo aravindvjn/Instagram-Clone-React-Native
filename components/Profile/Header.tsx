@@ -33,16 +33,14 @@ const Header = ({
   name,
   profilePic,
   bio,
-  followers,
-  following,
-  isPrivate,
+  followers = [],
+  following = [],
   posts = [],
   currentUser,
 }: UserType) => {
   const [storyStatus, setStoryStatus] = useState<StoryStatusType>("Viewed");
   const queryClient = useQueryClient();
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const navigation: any = useNavigation();
   const logoutHandler = async () => {
     await AsyncStorage.removeItem("idToken");
     queryClient.setQueryData(["user"], () => null);
@@ -95,11 +93,12 @@ const Header = ({
           </CustomButton>
         ) : (
           <OperationButtons
-            userId={id}
+            currentUserId={currentUser?.id}
+            userData={{ id, name, profilePic,username }}
             followStatus={decodeFollowStatus(
               currentUser?.id!,
-              followers!,
-              following!
+              followers,
+              following
             )}
             followerId={currentUser?.id}
           />

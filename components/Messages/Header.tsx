@@ -3,15 +3,18 @@ import React from "react";
 import ArrowBack from "../Helpers/ArrowBack";
 import Profile from "../Images/Profile";
 import CustomText from "../../UI/Typography/CustomText";
+import VisitUser from "../Helpers/VisitUser";
 
-const Header = () => {
+const Header = ({ id, profilePic, username, name }: any) => {
   return (
     <View style={styles.container}>
       <ArrowBack />
-      <Profile size={40} />
+      <VisitUser id={id}>
+        <Profile profile_url={profilePic} size={40} />
+      </VisitUser>
       <View>
-        <CustomText textStyle={styles.name}>ABHIRAM SM</CustomText>
-        <CustomText fontSize={12}>abhiramsm_</CustomText>
+        <CustomText textStyle={styles.name}>{name}</CustomText>
+        <CustomText fontSize={12}>{username}</CustomText>
       </View>
     </View>
   );

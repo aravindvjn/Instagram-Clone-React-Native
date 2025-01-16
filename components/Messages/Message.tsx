@@ -3,10 +3,10 @@ import React from "react";
 import { MessageType } from "./type";
 import CustomText from "../../UI/Typography/CustomText";
 
-const Message = ({ incoming, message }: MessageType) => {
+const Message = ({ incoming, message,timestamp }: MessageType) => {
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: incoming ? "#ececec" : "purple",
+      backgroundColor: incoming ? "#ececec" : "rgb(10, 0, 204)",
       padding: 10,
       paddingHorizontal:14,
       borderRadius: 10,

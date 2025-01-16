@@ -3,11 +3,14 @@ import React from "react";
 import Input from "../../UI/Inputs/Input";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
+import { SearchType } from "./type";
 
-const SearchInput = () => {
+const SearchInput = ({ onSearchChange, search }: SearchType) => {
   return (
     <View style={styles.container}>
       <Input
+        value={search}
+        onChangeText={onSearchChange}
         placeholder="Search"
         style={{ flex: 1 }}
         inputStyle={styles.input}

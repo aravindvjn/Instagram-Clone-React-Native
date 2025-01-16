@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { InputType } from "./type";
 import { COLORS } from "../../global/constants/color";
 import CustomText from "../Typography/CustomText";

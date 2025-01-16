@@ -26,6 +26,11 @@ const PostSkeleton = () => {
         </View>
       </View>
       <Skeleton style={styles.image} />
+      <Skeleton
+        h={40}
+        w={width}
+        style={{ borderRadius: 0, marginBottom: 10 }}
+      />
     </View>
   );
 };

@@ -19,9 +19,7 @@ const Posts3x3Grid = (props: UserType) => {
   const changePageHandler = () => {
     setPage(page === "grid" ? "tags" : "grid");
   };
-  if (!posts || posts?.length === 0) {
-    return <NoPosts />;
-  }
+
   return (
     <View>
       <View style={styles.container}>
@@ -55,12 +53,15 @@ const Posts3x3Grid = (props: UserType) => {
             flexWrap: "wrap",
           }}
         >
-          {posts &&
+          {posts?.length ? (
             posts
               ?.reverse()
               ?.map((item, index) => (
                 <SingleCell id={id} {...item} uri={item?.uri} key={index} />
-              ))}
+              ))
+          ) : (
+            <NoPosts />
+          )}
         </View>
       )}
     </View>

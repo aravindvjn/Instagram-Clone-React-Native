@@ -1,158 +1,83 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Layout from "../UI/Wrappers/Layout";
 import Header from "../components/Messages/Header";
 import Message from "../components/Messages/Message";
+import Footer from "../components/Messages/Footer";
+import Block from "../components/Helpers/Block";
+import { useMessages } from "../hooks/useMessages";
+import Center from "../UI/Wrappers/Center";
+import CustomText from "../UI/Typography/CustomText";
+import { createChat, sendMessage } from "../global/functions/messageRequests";
 
-const MessagesScreen = () => {
-  const data = [
-    {
-      message: "Hey! Have you seen the latest episode of that new series?",
-      timestamp: "2023-10-01T15:00:00Z",
-      incoming: true,
-    },
-    {
-      message: "Not yet! I’ve been so busy with work. Is it good?",
-      timestamp: "2023-10-01T15:01:00Z",
-      incoming: false,
-    },
-    {
-      message: "Yeah, it’s really interesting! The plot twists are amazing.",
-      timestamp: "2023-10-01T15:02:00Z",
-      incoming: true,
-    },
-    {
-      message: "I’ll have to catch up. What’s it about?",
-      timestamp: "2023-10-01T15:03:00Z",
-      incoming: false,
-    },
-    {
-      message:
-        "It’s a sci-fi thriller about time travel and alternate realities.",
-      timestamp: "2023-10-01T15:04:00Z",
-      incoming: true,
-    },
-    {
-      message: "Sounds intriguing! I love that genre.",
-      timestamp: "2023-10-01T15:05:00Z",
-      incoming: false,
-    },
-    {
-      message:
-        "You should definitely give it a try. The characters are well-developed too.",
-      timestamp: "2023-10-01T15:06:00Z",
-      incoming: true,
-    },
-    {
-      message: "I will! Do you have a favorite character?",
-      timestamp: "2023-10-01T15:07:00Z",
-      incoming: false,
-    },
-    {
-      message:
-        "I really like the main character. They have such a complex backstory.",
-      timestamp: "2023-10-01T15:08:00Z",
-      incoming: true,
-    },
-    {
-      message: "Nice! I always appreciate a good character arc.",
-      timestamp: "2023-10-01T15:09:00Z",
-      incoming: false,
-    },
-    {
-      message: "Exactly! And the cinematography is stunning too.",
-      timestamp: "2023-10-01T15:10:00Z",
-      incoming: true,
-    },
-    {
-      message:
-        "I’ll have to watch it on the weekend. Any other recommendations?",
-      timestamp: "2023-10-01T15:11:00Z",
-      incoming: false,
-    },
-    {
-      message: "Hey! Have you seen the latest episode of that new series?",
-      timestamp: "2023-10-01T15:00:00Z",
-      incoming: true,
-    },
-    {
-      message: "Not yet! I’ve been so busy with work. Is it good?",
-      timestamp: "2023-10-01T15:01:00Z",
-      incoming: false,
-    },
-    {
-      message: "Yeah, it’s really interesting! The plot twists are amazing.",
-      timestamp: "2023-10-01T15:02:00Z",
-      incoming: true,
-    },
-    {
-      message: "I’ll have to catch up. What’s it about?",
-      timestamp: "2023-10-01T15:03:00Z",
-      incoming: false,
-    },
-    {
-      message:
-        "It’s a sci-fi thriller about time travel and alternate realities.",
-      timestamp: "2023-10-01T15:04:00Z",
-      incoming: true,
-    },
-    {
-      message: "Sounds intriguing! I love that genre.",
-      timestamp: "2023-10-01T15:05:00Z",
-      incoming: false,
-    },
-    {
-      message:
-        "You should definitely give it a try. The characters are well-developed too.",
-      timestamp: "2023-10-01T15:06:00Z",
-      incoming: true,
-    },
-    {
-      message: "I will! Do you have a favorite character?",
-      timestamp: "2023-10-01T15:07:00Z",
-      incoming: false,
-    },
-    {
-      message:
-        "I really like the main character. They have such a complex backstory.",
-      timestamp: "2023-10-01T15:08:00Z",
-      incoming: true,
-    },
-    {
-      message: "Nice! I always appreciate a good character arc.",
-      timestamp: "2023-10-01T15:09:00Z",
-      incoming: false,
-    },
-    {
-      message: "Exactly! And the cinematography is stunning too.",
-      timestamp: "2023-10-01T15:10:00Z",
-      incoming: true,
-    },
-    {
-      message:
-        "I’ll have to watch it on the weekend. Any other recommendations?",
-      timestamp: "2023-10-01T15:11:00Z",
-      incoming: false,
-    },
-  ];
+const MessagesScreen = ({ route }: any) => {
+  const { params } = route;
+  const {
+    data = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useMessages(params?.user1_id, params?.user2_id);
 
+  const [message, setMessage] = useState<string>("");
+  const sendMessageHandler = async () => {
+    if (message && !isLoading && !isError) {
+      if (data?.length > 0) {
+        const result = await sendMessage(
+          params?.user1_id,
+          params?.user2_id,
+          message
+        );
+        if (result) {
+          setMessage("");
+          refetch();
+        }
+      } else {
+        const result = await createChat(params?.user1_id, params?.user2_id);
+        if (result) {
+          const res = await sendMessage(
+            params?.user1_id,
+            params?.user2_id,
+            message
+          );
+          if (result) {
+            setMessage("");
+            refetch();
+          }
+        }
+      }
+    }
+  };
   const renderItems = ({ item }: any) => (
     <Message
-      incoming={item.incoming}
-      message={item.message}
+      incoming={params?.user1_id !== item?.senderId}
+      message={item.text}
       timestamp={item.timestamp}
     />
   );
   return (
     <Layout noScrollView>
-      <Header />
+      <Header {...params?.userData} />
       <View style={{ paddingHorizontal: 16 }}>
         <FlatList
           data={data}
           renderItem={renderItems}
-          contentContainerStyle={{ paddingBottom: 250 }}
+          contentContainerStyle={{ paddingTop: 250 }}
+          ListHeaderComponent={<Block height={30} />}
+          ListFooterComponent={<Block height={10} />}
+          inverted
+          ListEmptyComponent={
+            <Center>
+              <CustomText>No Messages</CustomText>
+            </Center>
+          }
         />
       </View>
+      <Footer
+        setMessage={setMessage}
+        message={message}
+        onSend={sendMessageHandler}
+      />
     </Layout>
   );
 };

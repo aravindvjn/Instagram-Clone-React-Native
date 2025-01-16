@@ -5,20 +5,27 @@ import ArrowBackHeader from "../components/Helpers/ArrowBackHeader";
 import Header from "../components/Chats/Header";
 import SingleChat from "../components/Chats/SingleChat";
 import { chats } from "../data/chats";
+import { useChatList } from "../hooks/useChatsList";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import Center from "../UI/Wrappers/Center";
+import CustomText from "../UI/Typography/CustomText";
 
 const ChatListScreen = () => {
-  let newChats;
-  for (const post of Object.entries(chats)) {
-    newChats = Object.entries(post);
-  }
+  const { data: user } = useCurrentUser();
+  const { data: chats = [], isFetching, refetch } = useChatList(user?.id!);
   return (
     <Layout noScrollView>
       <FlatList
         ListHeaderComponent={<Header />}
-        data={newChats}
-        renderItem={({ item }) => <SingleChat chat={item} />}
+        data={chats}
+        renderItem={({ item }) => <SingleChat id={user?.id} {...item} />}
         refreshControl={
-          <RefreshControl refreshing={false} onRefresh={() => true} />
+          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+        }
+        ListEmptyComponent={
+          <Center>
+            <CustomText>No Chats</CustomText>
+          </Center>
         }
       />
     </Layout>

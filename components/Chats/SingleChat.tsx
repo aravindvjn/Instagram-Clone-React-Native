@@ -6,20 +6,26 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../global/constants/color";
 import { useNavigation } from "@react-navigation/native";
 
-const SingleChat = ({ username, name, profilePic }: any) => {
+const SingleChat = ({ chatId = "", otherUserData, lastMessage, id }: any) => {
   const navigation: any = useNavigation();
   return (
     <View style={[styles.container, { justifyContent: "space-between" }]}>
       <Pressable
-        onPress={() => navigation.navigate("Messages")}
+        onPress={() =>
+          navigation.navigate("Messages", {
+            user1_id: id,
+            user2_id: otherUserData?.id,
+            userData: otherUserData,
+          })
+        }
         style={styles.container}
       >
-        <Profile profile_url={profilePic} size={46} />
+        <Profile profile_url={otherUserData?.profilePic} size={46} />
         <View>
           <CustomText fontSize={14} textStyle={{ fontWeight: "bold" }}>
-            {name || username || "Instagram User"}
+            {otherUserData?.name || otherUserData?.username || "Instagram User"}
           </CustomText>
-          <CustomText numberOfLines={1}>Hello, How are you today?</CustomText>
+          <CustomText numberOfLines={1}>{lastMessage?.text || ""}</CustomText>
         </View>
       </Pressable>
       <Pressable>

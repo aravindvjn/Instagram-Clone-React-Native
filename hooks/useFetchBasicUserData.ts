@@ -2,7 +2,7 @@ import axios from "axios";
 import { firebaseDatabaseURL } from "../global/store/auth";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchBasicUserDataById = async (userId: string) => {
+export const fetchBasicUserDataById = async (userId: string) => {
     try {
         const response = await axios.get(`${firebaseDatabaseURL}/users/${userId}.json`);
         

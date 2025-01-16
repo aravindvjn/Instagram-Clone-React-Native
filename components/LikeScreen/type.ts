@@ -10,6 +10,14 @@ export interface FollowRequestType {
     profile_url?: string;
     followStatus?: FollowStatusType,
     time?: string
-    userId?: string;
+    userData?: UserDataType,
     followerId?: string;
+    currentUserId?: string;
+}
+
+export type UserDataType = {
+    id?: string,
+    name?: string,
+    profilePic?: string,
+    username?: string
 }

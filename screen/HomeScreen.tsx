@@ -20,8 +20,7 @@ const HomeScreen = () => {
   if (isLoading) {
     return (
       <Layout>
-        <Header />
-        <Stories stories={stories} />
+        {header}
         <PostSkeleton />
         <PostSkeleton />
       </Layout>

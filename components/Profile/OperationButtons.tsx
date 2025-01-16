@@ -8,15 +8,20 @@ import {
   removeFollower,
 } from "../../global/functions/followingOperations";
 import { COLORS } from "../../global/constants/color";
+import { useNavigation } from "@react-navigation/native";
 
 const OperationButtons = ({
-  userId,
+  userData,
   followerId,
   followStatus,
+  currentUserId,
 }: FollowRequestType) => {
   const [status, setStatus] = useState<FollowStatusType>(
     followStatus || "Follow"
   );
+
+  const navigation: any = useNavigation();
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -32,18 +37,18 @@ const OperationButtons = ({
   });
   const followHandler = async () => {
     if (
-      userId &&
+      userData?.id &&
       followerId &&
       (status === "Follow" || status === "Follow Back")
     ) {
       setStatus("Following");
-      const result = await addFollower(userId, followerId);
+      const result = await addFollower(userData?.id, followerId);
       if (!result) {
         setStatus(followStatus || "Follow");
       }
-    } else if (userId && followerId && status === "Following") {
+    } else if (userData?.id && followerId && status === "Following") {
       setStatus("Follow");
-      const result = await removeFollower(userId, followerId);
+      const result = await removeFollower(userData?.id, followerId);
       if (!result) {
         setStatus("Following");
       }
@@ -60,7 +65,18 @@ const OperationButtons = ({
       >
         {status}
       </CustomButton>
-      <CustomButton style={styles.button}>Message</CustomButton>
+      <CustomButton
+        onPress={() =>
+          navigation.navigate("Messages", {
+            user1_id: currentUserId,
+            user2_id: userData?.id,
+            userData,
+          })
+        }
+        style={styles.button}
+      >
+        Message
+      </CustomButton>
     </View>
   );
 };
