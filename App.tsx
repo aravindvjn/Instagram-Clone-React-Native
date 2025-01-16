@@ -5,7 +5,10 @@ import { COLORS } from "./global/constants/color";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
+
 SplashScreen.preventAutoHideAsync();
+
+
 
 const queryClient = new QueryClient();
 export default function App() {

@@ -1,4 +1,11 @@
-import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import Layout from "../UI/Wrappers/Layout";
 import Header from "../components/Home/Header";
@@ -7,6 +14,8 @@ import Post from "../components/Card/Post";
 import { PostTypes, StoryTypes } from "../components/Home/type";
 import { useFetchAllPosts } from "../hooks/useFetchAllPosts";
 import PostSkeleton from "../components/Card/PostSkeleton";
+import * as Notifications from "expo-notifications";
+import UploadProgress from "../components/Home/UploadProgress";
 
 const HomeScreen = () => {
   const { data: posts = [], refetch, isLoading } = useFetchAllPosts();
@@ -15,6 +24,7 @@ const HomeScreen = () => {
     <>
       <Header />
       <Stories stories={stories} />
+      <UploadProgress />
     </>
   );
   if (isLoading) {

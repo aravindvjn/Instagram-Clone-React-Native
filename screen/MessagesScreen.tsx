@@ -18,10 +18,11 @@ const MessagesScreen = ({ route }: any) => {
     isError,
     refetch,
   } = useMessages(params?.user1_id, params?.user2_id);
-
+  const [isSending, setIsSending] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const sendMessageHandler = async () => {
-    if (message && !isLoading && !isError) {
+    if (message && !isLoading && !isError && !isSending) {
+      setIsSending(true);
       if (data?.length > 0) {
         const result = await sendMessage(
           params?.user1_id,
@@ -46,6 +47,7 @@ const MessagesScreen = ({ route }: any) => {
           }
         }
       }
+      setIsSending(false);
     }
   };
   const renderItems = ({ item }: any) => (

@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon-no-bg.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/splash.png",
         "backgroundColor": "#000000"
       },
       "permissions": [
@@ -30,7 +30,16 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-video"],
+    "plugins": [
+      "expo-video",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon-no-bg.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "8285cec0-56cf-45a7-9304-9bb1b7be1349"

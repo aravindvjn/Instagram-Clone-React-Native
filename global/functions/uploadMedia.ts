@@ -1,3 +1,4 @@
+
 import { CLOUDINARY_UPLOAD_PRESET, cloudName } from "../store/cloudinary";
 
 export const handleUpload = async (base64: string, fileType = 'image', setProgress: any) => {

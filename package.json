@@ -35,7 +35,8 @@
     "react-native-screens": "^4.5.0",
     "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-vector-icons": "^10.2.0",
-    "undefined": "@expo/vector-icons/Ionicons"
+    "undefined": "@expo/vector-icons/Ionicons",
+    "expo-notifications": "~0.29.12"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

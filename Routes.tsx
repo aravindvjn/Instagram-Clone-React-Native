@@ -33,6 +33,7 @@ const Routes = () => {
   if (isLoading && !failed) {
     return <WelcomeScreen />;
   }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -60,19 +61,6 @@ const Routes = () => {
 };
 
 export default Routes;
-
-// const ProtectedRoutes = () => {
-//   return (
-//     <Stack.Navigator
-//       screenOptions={{
-//         headerShown: false,
-//       }}
-//     >
-//       <Stack.Screen name="Main" component={MainRoutes} />
-//       <Stack.Screen name="DetailedPost" component={DetailedPostScreen} />
-//     </Stack.Navigator>
-//   );
-// };
 
 const MainRoutes = () => {
   const { data: user } = useCurrentUser();
